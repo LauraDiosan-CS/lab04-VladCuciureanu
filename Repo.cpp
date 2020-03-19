@@ -1,9 +1,12 @@
 #include "Repo.h"
+#include <iostream>
+
+#define REPO_MAX 20
 
 Repo::Repo()
 {
 	this->transactions_count = 0;
-	this->transactions = new Transaction[10];
+	this->transactions = new Transaction[REPO_MAX];
 }
 
 Repo::~Repo()
@@ -22,7 +25,10 @@ int Repo::getSize()
 
 void Repo::addItem(const Transaction t)
 {
-	this->transactions[transactions_count++] = t;
+	if (transactions_count < REPO_MAX)
+		this->transactions[transactions_count++] = t;
+	else
+		std::cout << "Couldn't add transaction. Repo is full!";
 }
 
 Transaction* Repo::getAll()
