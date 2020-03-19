@@ -5,11 +5,18 @@
 
 using namespace std;
 
+/*
+Shows menu options.
+*/
 void showMenuOptions()
 {
 	std::cout << "Options: \n 1. Add Transaction\n 2. Show Transactions\n 0. Exit\n";
 }
 
+/*
+Handles inputting a transaction.
+In: Reference to repo object.
+*/
 void handleTransactionInput(Repo& repo)
 {
 	try
@@ -35,14 +42,23 @@ void handleTransactionInput(Repo& repo)
 	}
 }
 
+/*
+Driver code
+*/
 int main()
 {
+	// Run tests
 	runTransactionTests();
 	runRepoTests();
 
+	// Initializing necessary objects
 	Repo mainRepo = Repo();
 	Transaction* transactions = mainRepo.getAll();
 	bool trigger = false;
+	
+	/*
+	UI Loop
+	*/
 	while (!trigger)
 	{
 		showMenuOptions();
