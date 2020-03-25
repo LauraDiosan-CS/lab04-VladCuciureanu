@@ -2,6 +2,7 @@
 #include "Transaction.h"
 #include "Repo.h"
 #include <assert.h>
+#include <iostream>
 
 void runTransactionTests()
 {
@@ -36,4 +37,24 @@ void runRepoTests()
 	r.addItem(t);
 	assert(r.getSize() == 2);
 	assert(r.getAll()[0] == r.getAll()[1]);
+	t = Transaction(6, 4, 2, "fest");
+	r.addItem(t);
+	int index = r.findItem(t);
+	assert(index != -1);
+	t.setDay(8);
+	index = r.findItem(t);
+	assert(index == -1);
+	t = Transaction(3, 2, 1, "Test");
+	assert(r.getItemFromPos(1) == t);
+	assert(r.getSize() == 3);
+	r.delItem(t);
+	assert(r.getSize() == 2);
+	assert(r.getItemFromPos(0) == t);
+	r.updateItem(t, 10, 11, 2, "Fest");
+	t = r.getItemFromPos(0);
+	Transaction* allTrans = r.getAll();
+	assert(t.getDay() == 10);
+	assert(t.getSum() == 11);
+	assert(t.getType() == 2);
+	assert(strcmp(t.getDesc(), "Fest")==0);
 }
