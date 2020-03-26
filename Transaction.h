@@ -3,6 +3,7 @@
 class Transaction
 {
 private:
+	unsigned int id;
 	unsigned short day;
 	unsigned int sum;
 	short type;
@@ -22,7 +23,7 @@ public:
 	In: type - Type of transaction (1-In, 2-Out).
 	In: desc - Description of transaction.
 	*/
-	Transaction(unsigned short day, unsigned int sum, short type, const char* desc);
+	Transaction(unsigned int id, unsigned short day, unsigned int sum, short type, const char* desc);
 
 	/*
 	Copy constructor
@@ -36,6 +37,12 @@ public:
 	~Transaction();
 
 	// Getters
+	/*
+	Returns id of transaction
+	Out: id of transaction.
+	*/
+	unsigned int getId();
+
 	/*
 	Returns day of transaction
 	Out: day of transaction.

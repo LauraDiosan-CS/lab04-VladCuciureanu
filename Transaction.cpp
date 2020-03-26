@@ -4,14 +4,16 @@
 
 Transaction::Transaction()
 {
+	this->id = 0;
 	this->day = 0;
 	this->desc = nullptr;
 	this->sum = 0;
 	this->type = 0;
 }
 
-Transaction::Transaction(unsigned short day, unsigned int sum, short type, const char* desc)
+Transaction::Transaction(unsigned int id, unsigned short day, unsigned int sum, short type, const char* desc)
 {
+	this->id = id;
 	this->day = day;
 	this->sum = sum;
 	this->type = type;
@@ -22,6 +24,7 @@ Transaction::Transaction(unsigned short day, unsigned int sum, short type, const
 
 Transaction::Transaction(const Transaction& s)
 {
+	this->id = s.id;
 	this->day = s.day;
 	this->sum = s.sum;
 	this->type = s.type;
@@ -32,11 +35,19 @@ Transaction::Transaction(const Transaction& s)
 
 Transaction::~Transaction()
 {
-	if (this->desc)
-	{
-		delete[] this->desc;
-		this->desc = nullptr;
+	try {
+		if (this->desc != nullptr)
+		{
+			delete[] this->desc;
+			this->desc = nullptr;
+		}
 	}
+	catch(int e){};
+}
+
+unsigned int Transaction::getId()
+{
+	return this->id;
 }
 
 unsigned short Transaction::getDay()
@@ -93,6 +104,7 @@ Transaction& Transaction::operator=(const Transaction& s)
 		delete[] this->desc;
 		this->desc = nullptr;
 	}
+	this->id = s.id;
 	this->day = s.day;
 	this->sum = s.sum;
 	this->type = s.type;
@@ -104,6 +116,8 @@ Transaction& Transaction::operator=(const Transaction& s)
 
 bool Transaction::operator==(const Transaction& s)
 {
+	if (this->getId() != s.id)
+		return false;
 	if (this->getDay() != s.day)
 		return false;
 	if (this->getSum() != s.sum)
@@ -118,12 +132,14 @@ bool Transaction::operator==(const Transaction& s)
 char* Transaction::toString()
 {
 	char result[256] = "";
-	strcat_s(result, 256, "Day: ");
+	strcat_s(result, 256, "ID: ");
+	strcat_s(result, 256, std::to_string(this->id).c_str());
+	strcat_s(result, 256, " | Day: ");
 	strcat_s(result, 256, std::to_string(this->day).c_str());
 	strcat_s(result, 256, " | Sum: ");
 	strcat_s(result, 256, std::to_string(this->sum).c_str());
 	strcat_s(result, 256, " | Type: ");
-	strcat_s(result, 256, std::to_string(this->type).c_str());
+	strcat_s(result, 256, this->type==1?"In":"Out");
 	strcat_s(result, 256, " | Desc: ");
 	strcat_s(result, 256, this->getDesc());
 	strcat_s(result, 256, "\0");

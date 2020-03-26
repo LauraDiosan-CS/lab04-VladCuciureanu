@@ -7,6 +7,7 @@ Repo::Repo()
 {
 	this->transactions_count = 0;
 	this->transactions = new Transaction[REPO_MAX];
+	this->id_count = 1;
 }
 
 Repo::~Repo()
@@ -26,7 +27,10 @@ int Repo::getSize()
 void Repo::addItem(const Transaction t)
 {
 	if (transactions_count < REPO_MAX)
+	{
 		this->transactions[transactions_count++] = t;
+		this->id_count++;
+	}
 	else
 		std::cout << "Couldn't add transaction. Repo is full!";
 }
@@ -37,6 +41,28 @@ int Repo::findItem(const Transaction t)
 	for (int i = 0; i < this->getSize(); i++)
 	{
 		if (transactions[i] == t)
+			return i;
+	}
+	return -1;
+}
+
+int Repo::findItemValues(unsigned short day, unsigned int sum, short type, const char* desc)
+{
+	Transaction* t = this->getAll();
+	for (int i = 0; i < this->getSize(); i++)
+	{
+		if (t[i].getDay() == day && t[i].getSum() == sum && t[i].getType() == type && strcmp(t[i].getDesc(), desc)==0)
+			return i;
+	}
+	return -1;
+}
+
+int Repo::findId(const int id)
+{
+	Transaction* transactions = this->getAll();
+	for (int i = 0; i < this->getSize(); i++)
+	{
+		if (transactions[i].getId() == id)
 			return i;
 	}
 	return -1;
@@ -59,12 +85,11 @@ void Repo::delItem(const Transaction t)
 	this->transactions_count--;
 }
 
-void Repo::updateItem(const Transaction t, unsigned short day = 0, unsigned int sum = 0, short type = -1, const char* desc = nullptr)
+void Repo::updateItem(int id, unsigned short day = 0, unsigned int sum = 0, short type = -1, const char* desc = nullptr)
 {
-	int index = this->findItem(t);
+	int index = this->findId(id);
 	if (index == -1)
 		return;
-	std::cout << "Passed update";
 	if (day != 0)
 		transactions[index].setDay(day);
 	if (sum != 0)
@@ -78,4 +103,9 @@ void Repo::updateItem(const Transaction t, unsigned short day = 0, unsigned int 
 Transaction* Repo::getAll()
 {
 	return this->transactions;
+}
+
+int Repo::getNextId()
+{
+	return this->id_count;
 }

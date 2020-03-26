@@ -21,11 +21,13 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Repo.cpp" />
+    <ClCompile Include="Service.cpp" />
     <ClCompile Include="Test.cpp" />
     <ClCompile Include="Transaction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Repo.h" />
+    <ClInclude Include="Service.h" />
     <ClInclude Include="Test.h" />
     <ClInclude Include="Transaction.h" />
   </ItemGroup>

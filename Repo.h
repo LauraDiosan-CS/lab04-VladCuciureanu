@@ -3,9 +3,10 @@
 class Repo
 {
 private:
+	int id_count;
+public:
 	Transaction* transactions;
 	int transactions_count;
-public:
 	/*
 	Blank constructor.
 	*/
@@ -29,6 +30,18 @@ public:
 	int findItem(const Transaction t);
 
 	/*
+	Returns the index of the given item if found in the array.
+	In: Object to be found.
+	*/
+	int findItemValues(unsigned short day, unsigned int sum, short type, const char* desc);
+
+	/*
+	Returns the index of the item with given id if found in the array.
+	In: Id of the object to be found.
+	*/
+	int findId(const int id);
+
+	/*
 	Returns the item from given index in array.
 	In: position in array.
 	*/
@@ -44,7 +57,7 @@ public:
 	Updates given item if found in repo with given values.
 	In: item to be updated.
 	*/
-	void updateItem(const Transaction t, unsigned short day, unsigned int sum, short type, const char* desc);
+	void updateItem(int id, unsigned short day, unsigned int sum, short type, const char* desc);
 	
 	/*
 	Returns a pointer to the object array.
@@ -57,6 +70,12 @@ public:
 	Out: number of items.
 	*/
 	int getSize();
+
+	/*
+	Returns an unique id.
+	In: id.
+	*/
+	int getNextId();
 
 };
 

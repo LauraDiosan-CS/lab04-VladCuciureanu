@@ -2,6 +2,7 @@
 #include "Test.h"
 #include "Transaction.h"
 #include "Repo.h"
+#include "Service.h"
 
 using namespace std;
 
@@ -17,7 +18,7 @@ void showMenuOptions()
 Handles inputting a transaction.
 In: Reference to repo object.
 */
-void handleTransactionInput(Repo& repo)
+void handleTransactionInput(Service& service)
 {
 	try
 	{
@@ -33,8 +34,7 @@ void handleTransactionInput(Repo& repo)
 		std::cin >> type;
 		std::cout << "Desc: ";
 		std::cin >> desc;
-		Transaction t = Transaction(day, sum, type, desc);
-		repo.addItem(t);
+		service.addTransaction(day, sum, type, desc);
 	}
 	catch(exception e)
 	{
@@ -53,9 +53,12 @@ int main()
 
 	// Initializing necessary objects
 	Repo mainRepo = Repo();
+	Service mainService = Service(mainRepo);
 	Transaction* transactions = mainRepo.getAll();
+	Transaction* t;
 	bool trigger = false;
-	
+	int* results;
+	int day, sum, type, index, counter;
 	/*
 	UI Loop
 	*/
@@ -68,15 +71,98 @@ int main()
 		switch (choice)
 		{
 		case '1':
-			handleTransactionInput(mainRepo);
+			handleTransactionInput(mainService);
 			break;
 		case '2':
 			std::cout << "Transactions: \n";
-			transactions = mainRepo.getAll();
-			for (int x = 0; x < mainRepo.getSize(); x++)
+			transactions = mainService.getTransactions();
+			for (int x = 0; x < mainService.getSize(); x++)
 			{
 				std::cout << x+1 << ": " << transactions[x].toString() << '\n';
 			}
+			break;
+		case '3':
+			std::cout << "Day: ";
+			std::cin >> day;
+			mainService.delTransactionsByDay(day);
+			break;
+		case '4':
+			int m, n;
+			std::cout << "Start: ";
+			std::cin >> m;
+			std::cout << "Days: ";
+			std::cin >> n;
+			mainService.delTransactionsInInterval(m, m + n);
+			break;
+		case '5':
+			std::cout << "Type: ";
+			std::cin >> type;
+			mainService.delTransactionsByType(type);
+			break;
+		case '6':
+			std::cout << "Sum: ";
+			std::cin >> sum;
+			std::cout << "Day: ";
+			std::cin >> day;
+			std::cout << "Type: ";
+			std::cin >> type;
+			mainService.updateSumByDayAndType(day, type, sum);
+			break;
+		case '7':
+			std::cout << "Type: ";
+			std::cin >> type;
+			t = mainService.getTransactionsByType(type);
+			counter = mainService.getTransactionsByTypeCount(type);
+			for (int i = 0; i < counter; i++)
+				std::cout << t[i].toString() << std::endl;
+			break;
+		case '8':
+			std::cout << "Sum: ";
+			std::cin >> sum;
+			t = mainService.getTransactionsWithSumGreaterThan(sum);
+			counter = mainService.getTransactionsWithSumGreaterThanCount(sum);
+			for (int i = 0; i < counter; i++)
+				std::cout << t[i].toString() << std::endl;
+			break;
+		case '9':
+			std::cout << "Sum: ";
+			std::cin >> sum;
+			t = mainService.getTransactionsWithSumEqualTo(sum);
+			counter = mainService.getTransactionsWithSumEqualToCount(sum);
+			for (int i = 0; i < counter; i++)
+				std::cout << t[i].toString() << std::endl;
+			break;
+		case 'a':
+			std::cout << "Day: ";
+			std::cin >> day;
+			results = mainService.getInOutByDay(day);
+			std::cout << "In: " << results[0] << " | Out: " << results[1] << std::endl;
+			break;
+		case 'b':
+			std::cout << "Type: ";
+			std::cin >> type;
+			std::cout << mainService.getSumByType(type);
+			break;
+		case 'c':
+			std::cout << "Day: ";
+			std::cin >> day;
+			std::cout << "Type: ";
+			std::cin >> type;
+			index = mainService.getMaxSumByDayAndType(day, type);
+			if(index!=-1)
+			std::cout << mainService.getTransactionFromPos(index).toString();
+			break;
+		case 'd':
+			std::cout << "Type: ";
+			std::cin >> type;
+			mainService.filterByType(type);
+			break;
+		case 'e':
+			std::cout << "Type: ";
+			std::cin >> type;
+			std::cout << "Sum: ";
+			std::cin >> sum;
+			mainService.filterByTypeAndSumSmallerThan(type, sum);
 			break;
 		case '0':
 			trigger = true;
