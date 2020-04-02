@@ -3,16 +3,9 @@
 #include "Transaction.h"
 #include "Repo.h"
 #include "Service.h"
+#include "UserInterface.h"
 
 using namespace std;
-
-/*
-Shows menu options.
-*/
-void showMenuOptions()
-{
-	std::cout << "Options: \n 1. Add Transaction\n 2. Show Transactions\n 0. Exit\n";
-}
 
 /*
 Handles inputting a transaction.
@@ -54,14 +47,19 @@ int main()
 	// Initializing necessary objects
 	Repo mainRepo = Repo();
 	Service mainService = Service(mainRepo);
+	UserInterface userInterface = UserInterface(mainService);
+
+	userInterface.init();
+
+	/*
 	Transaction* transactions = mainRepo.getAll();
 	Transaction* t;
 	bool trigger = false;
 	int* results;
 	int day, sum, type, index, counter;
-	/*
+	
 	UI Loop
-	*/
+	
 	while (!trigger)
 	{
 		showMenuOptions();
@@ -172,6 +170,6 @@ int main()
 			break;
 		}
 		std::cout << "\n\n";
-	}
+	}*/
 	return 0;
 }

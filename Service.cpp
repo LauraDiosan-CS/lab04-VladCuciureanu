@@ -146,6 +146,22 @@ Transaction* Service::getTransactionsWithSumEqualTo(unsigned int sum)
 	return t;
 }
 
+Transaction* Service::getTransactionsWithSumSmallerThan(unsigned int sum)
+{
+	int counter = 0;
+	for (int i = 0; i < repo.getSize(); i++)
+		if (repo.getItemFromPos(i).getSum() < sum)
+			counter++;
+	if (counter < 1)
+		return nullptr;
+	Transaction* t = new Transaction[counter];
+	int new_counter = 0;
+	for (int i = 0; i < repo.getSize(); i++)
+		if (repo.getItemFromPos(i).getType() < sum)
+			t[new_counter++] = repo.getItemFromPos(i);
+	return t;
+}
+
 Transaction* Service::getTransactionsByDayAndType(unsigned short day, short type)
 {
 	int counter = 0;
@@ -176,6 +192,15 @@ int Service::getTransactionsWithSumGreaterThanCount(unsigned int sum)
 	int counter = 0;
 	for (int i = 0; i < repo.getSize(); i++)
 		if (repo.getItemFromPos(i).getSum() > sum)
+			counter++;
+	return counter;
+}
+
+int Service::getTransactionsWithSumSmallerThanCount(unsigned int sum)
+{
+	int counter = 0;
+	for (int i = 0; i < repo.getSize(); i++)
+		if (repo.getItemFromPos(i).getSum() < sum)
 			counter++;
 	return counter;
 }

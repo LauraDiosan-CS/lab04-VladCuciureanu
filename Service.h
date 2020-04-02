@@ -105,6 +105,12 @@ public:
 	*/
 	Transaction* getTransactionsWithSumEqualTo(unsigned int sum);
 	/*
+	Get transactions with sum smaller than given sum
+	In: sum
+	Out: array of transactions
+	*/
+	Transaction* getTransactionsWithSumSmallerThan(unsigned int sum);
+	/*
 	Get transactions made in given day and of given type
 	In: day
 	In: type
@@ -123,6 +129,10 @@ public:
 	Count method for non-counter method
 	*/
 	int getTransactionsWithSumEqualToCount(unsigned int sum);
+	/*
+	Count method for non-counter method
+	*/
+	int getTransactionsWithSumSmallerThanCount(unsigned int sum);
 	/*
 	Count method for non-counter method
 	*/
